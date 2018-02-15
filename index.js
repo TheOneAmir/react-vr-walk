@@ -13,7 +13,9 @@ const DIRECTION = {
   FORWARD: 'FORWARD',
   BACKWARD: 'BACKWARD',
   LEFT: 'LEFT',
-  RIGHT: 'RIGHT'
+  RIGHT: 'RIGHT',
+  UPWARD: 'UPWARD',
+  DOWNWARD: 'DOWNWARD',
 };
 
 export default class Walk extends Component {
@@ -42,6 +44,7 @@ export default class Walk extends Component {
     this.state = {
       x: new Animated.Value(0),
       z: new Animated.Value(starting),
+	  y: new Animated.Value(0),
       pz: new Animated.Value(startingPano),
     };
 
@@ -56,9 +59,14 @@ export default class Walk extends Component {
     this.moveX = Animated.event([
       null, { dx: this.state.x },
     ]);
+	
+	this.moveY = Animated.event([
+		null, {dy: this.state.y },
+	]);
 
     this.positionZ = starting;
     this.positionPZ = startingPano;
+	this.positionY = 0;
     this.positionX = 0;
   }
 
@@ -80,6 +88,12 @@ export default class Walk extends Component {
         case 'KeyD':
           this.walk(DIRECTION.RIGHT);
           break;
+		case 'KeyE':
+		  this.walk(DIRECTION.UPWARD);
+		  break;
+		case 'KeyX':
+		  this.walk(DIRECTION.DOWNWARD);
+		  break;
         default:
           break;
       }
@@ -110,6 +124,14 @@ export default class Walk extends Component {
         this.positionX = this.positionX - speed;
         this.moveX(null, { dx: this.positionX });
         break;
+	  case DIRECTION.UPWARD:
+	    this.positionY = this.positionY + speed;
+		this.moveY(null, { dy: this.positionY });
+		break;
+	  case DIRECTION.DOWNWARD:
+		this.positionY = this.positionY - speed;
+		this.moveY(null, { dy: this.positionY });
+		break;
       default:
         break;
     }
@@ -123,7 +145,8 @@ export default class Walk extends Component {
         style={{
           transform: [
             { translateX: this.state.x },
-            { translateZ: this.state.z }
+            { translateZ: this.state.z },
+			{ translateY: this.state.y }
           ]
         }}
       >
