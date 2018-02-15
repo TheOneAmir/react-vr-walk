@@ -1,6 +1,10 @@
 # react-vr-walk
 Walk around your ReactVr app with WASD!
 
+Modification: Use E and R to move up and down!
+
+Forked from: https://github.com/apoeco/react-vr-walk
+
 # Example:
 
 ```javascript
